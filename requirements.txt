@@ -1,0 +1,13 @@
+fastapi[all]
+uvicorn
+tortoise-orm
+loguru
+qrcode[pil]
+# optional for postgresql
+
+asyncpg
+
+# optional for mysql
+
+asyncmy
+aiomysql
