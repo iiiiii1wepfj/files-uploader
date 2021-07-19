@@ -245,6 +245,11 @@ async def get_file_stats(file_id: str, request: Request):
     return get_the_file_id_stats
 
 
+@apirouter.api_route("/all", methods=["POST", "GET"])
+async def get_the_files_count():
+    return {"count": await get_files_count()}
+
+
 @app.get("/download/{file_id}")
 async def download_the_file(file_id: str):
     downloadfiledb = await get_the_file_download(file_id=file_id)
