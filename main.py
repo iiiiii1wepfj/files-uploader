@@ -72,7 +72,7 @@ async def gen_valid_file_id():
 
 async def check_file_size(file_size: int):
     if file_size > max_file_size:
-        raise HTTPException(status_code=400, detail="the file is bigger than 700MB")
+        raise HTTPException(status_code=400, detail="the file is bigger than 700MIB")
     else:
         return True
 
