@@ -11,7 +11,7 @@ from pathlib import Path
 from loguru import logger
 from io import BytesIO
 from config import database_url, port
-import uvicorn, os, sys, qrcode
+import uvicorn, os, sys, qrcode, zipfile
 
 logger.add(
     sys.stdout,
@@ -37,6 +37,16 @@ class Files(Model):
     file_name = fields.TextField()
     views = fields.IntField()
     created_at = fields.DatetimeField(auto_now_add=True)
+
+
+def make_zip(file, filename: str):
+    with zipfile.ZipFile(
+        f"{downloads_folder}/{filename}.zip",
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+        allowZip64=True,
+    ) as zipthefile:
+        zipthefile.write(file)
 
 
 async def check_if_file_id_exists(file_id: str):
@@ -84,6 +94,8 @@ async def upload_the_file_db(file, file_size: int, host):
     read_file = await file.read()
     with open(f"{file_location}", "wb") as writefile:
         writefile.write(read_file)
+    make_zip(file=file_location, filename=the_file_name)
+    os.remove(file_location)
     await Files.create(
         file_id=file_id,
         file_location=file_location,
@@ -121,8 +133,8 @@ async def get_the_file_download(file_id: str):
         raise HTTPException(status_code=404, detail="the file id is not exists")
     else:
         get_the_file_id_db = await Files.get(file_id=thefileid)
-        get_the_file_location = get_the_file_id_db.file_location
-        get_the_file_name = get_the_file_id_db.file_name
+        get_the_file_location = get_the_file_id_db.file_location + ".zip"
+        get_the_file_name = get_the_file_id_db.file_name + ".zip"
         theviews = int(get_the_file_id_db.views) + 1
         await Files.filter(file_id=thefileid).update(views=theviews)
         return FileResponse(
