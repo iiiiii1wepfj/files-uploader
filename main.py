@@ -88,6 +88,7 @@ async def upload_the_file_db(file, file_size: int, host):
             check_suffix_two = "." + check_suffix_two
         file_location = f"{downloads_folder}/{file_id}{check_suffix_two}"
         the_file_name = f"{file_id}{check_suffix_two}"
+        file_location_one = f"{downloads_folder}/{file.filename}{check_suffix_two}"
     else:
         file_location = f"{downloads_folder}/{file_id}"
         file_location_one = f"{downloads_folder}/{file.filename}"
