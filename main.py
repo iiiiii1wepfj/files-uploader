@@ -90,12 +90,13 @@ async def upload_the_file_db(file, file_size: int, host):
         the_file_name = f"{file_id}{check_suffix_two}"
     else:
         file_location = f"{downloads_folder}/{file_id}"
+        file_location_one = f"{downloads_folder}/{file.filename}"
         the_file_name = f"{file_id}"
     read_file = await file.read()
-    with open(f"{file_location}", "wb") as writefile:
+    with open(f"{file_location_one}", "wb") as writefile:
         writefile.write(read_file)
-    make_zip(file=file_location, filename=the_file_name)
-    os.remove(file_location)
+    make_zip(file=file_location_one, filename=the_file_name)
+    os.remove(file_location_one)
     await Files.create(
         file_id=file_id,
         file_location=file_location,
