@@ -25,9 +25,9 @@ app = FastAPI(
     description="for donations: https://paypal.me/itayki.",
     version="1.0",
 )
-downloads_folder = "files_dir"
+downloads_folder: str = "files_dir"
 max_file_size = 700000000
-file_id_allowed_characters = "abcdefghijklmnopqrstuvwxyz0123456789"
+file_id_allowed_characters: str = "abcdefghijklmnopqrstuvwxyz0123456789"
 
 
 class Files(Model):
